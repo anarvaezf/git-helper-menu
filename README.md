@@ -48,10 +48,11 @@ Clone the repository:
 git clone https://github.com/anarvaezf/git-helper-menu.git
 ```
 
-Add the helpers to your `.zshrc`:
+Run the installer:
 
 ```bash
-source /path/to/git-helper-menu/zsh/git-helpers.zsh
+cd git-helper-menu/zsh
+./install.sh
 ```
 
 Reload your shell:
@@ -77,6 +78,15 @@ gitRebase
 gitCleanBranches
 ```
 
+---
+
+### Quick Install (optional)
+
+You can also install directly with:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/anarvaezf/git-helper-menu/main/zsh/install.sh | bash
+```
 ---
 
 # PowerShell

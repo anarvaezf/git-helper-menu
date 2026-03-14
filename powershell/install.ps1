@@ -1,41 +1,38 @@
-Write-Host ""
-Write-Host "Installing git-helper-menu for PowerShell..."
-Write-Host ""
+$InstallDir = "$HOME\.git-helper-menu"
+$ScriptSource = "$PSScriptRoot\git-helpers.ps1"
+$ScriptTarget = "$InstallDir\git-helpers.ps1"
 
-$RepoUrl = "https://github.com/anarvaezf/git-helper-menu.git"
-$InstallPath = "$HOME\.git-helper-menu"
+Write-Host "Installing git-helper-menu..."
 
-if (!(Test-Path $InstallPath)) {
-    git clone $RepoUrl $InstallPath
-} else {
-    Write-Host "Repository already exists. Pulling latest changes..."
-    cd $InstallPath
-    git pull
+if (!(Test-Path $InstallDir)) {
+    New-Item -ItemType Directory -Path $InstallDir | Out-Null
 }
 
-$ProfilePath = $PROFILE
+Copy-Item $ScriptSource $ScriptTarget -Force
 
-if (!(Test-Path $ProfilePath)) {
-    Write-Host "Creating PowerShell profile..."
-    New-Item -ItemType File -Path $ProfilePath -Force | Out-Null
+if (!(Test-Path $PROFILE)) {
+    New-Item -ItemType File -Path $PROFILE -Force | Out-Null
 }
 
-$LoadLine = ". `"$InstallPath\powershell\git-helpers.ps1`""
+$SourceLine = ". `"$ScriptTarget`""
 
-$ProfileContent = Get-Content $ProfilePath -ErrorAction SilentlyContinue
+$ProfileContent = Get-Content $PROFILE -ErrorAction SilentlyContinue
 
-if ($ProfileContent -notcontains $LoadLine) {
-    Add-Content $ProfilePath ""
-    Add-Content $ProfilePath "# Git Helper Menu"
-    Add-Content $ProfilePath $LoadLine
+if ($ProfileContent -notcontains $SourceLine) {
+    Add-Content $PROFILE ""
+    Add-Content $PROFILE "# Git Helper Menu"
+    Add-Content $PROFILE $SourceLine
+    Write-Host "Added git helpers to PowerShell profile."
+}
+else {
+    Write-Host "git helpers already configured in profile."
 }
 
 Write-Host ""
 Write-Host "Installation complete."
+Write-Host ""
 Write-Host "Reload your profile with:"
 Write-Host ""
 Write-Host ". `$PROFILE"
 Write-Host ""
-Write-Host "Then open the menu with:"
-Write-Host "Ctrl + G"
-Write-Host ""
+Write-Host "Then press Ctrl + G to open the menu."

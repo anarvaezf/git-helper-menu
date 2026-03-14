@@ -5,18 +5,20 @@ function GitAdd {
 
 function GitCommit {
     param(
-        [Parameter(Mandatory = $false)]
         [string]$Message
     )
 
     if ([string]::IsNullOrWhiteSpace($Message)) {
-        Write-Host '[GitCommit] Missing commit message.'
-        Write-Host 'Usage: GitCommit "your message"'
+        $Message = Read-Host "[GitCommit] Commit message"
+    }
+
+    if ([string]::IsNullOrWhiteSpace($Message)) {
+        Write-Host "[GitCommit] Aborted: empty commit message."
         return
     }
 
     Write-Host "[GitCommit] Commit with message: $Message"
-    git commit -m $Message
+    git commit -m "$Message"
 }
 
 function GitNewBranch {
